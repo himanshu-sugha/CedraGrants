@@ -1,61 +1,66 @@
-# 🏛️ CedraGrants - Public Goods Funding Protocol
+# CedraGrants - Public Goods Funding Protocol
 
 > **The first complete public goods funding infrastructure for Cedra blockchain**
 
 
 ---
 
-## 📚 Table of Contents
+## Table of Contents
 
-1. [What is CedraGrants?](#-what-is-cedragrants)
-2. [Why CedraGrants is Special](#-why-cedragrants-is-special)
-3. [Cedra Architecture Understanding](#-cedra-architecture-understanding)
-4. [Smart Contract Architecture](#-smart-contract-architecture)
-5. [Detailed Module Documentation](#-detailed-module-documentation)
-6. [Move Language Patterns Used](#-move-language-patterns-used)
-7. [Quick Start](#-quick-start)
-8. [How Quadratic Funding Works](#-how-quadratic-funding-works)
-9. [VRF Anti-Sybil Mechanism](#-vrf-anti-sybil-mechanism)
-10. [RPGF: Reward Proven Value](#-rpgf-reward-proven-value)
-11. [Events for Indexer Integration](#-events-for-indexer-integration)
-12. [TypeScript SDK Integration](#-typescript-sdk-integration)
-13. [Frontend](#️-frontend)
-14. [Documentation References](#-documentation-references)
-15. [Roadmap](#️-roadmap)
+1. [What is CedraGrants?](#1-what-is-cedragrants)
+2. [Why CedraGrants is Special](#2-why-cedragrants-is-special)
+3. [Cedra Architecture Understanding](#3-cedra-architecture-understanding)
+4. [Smart Contract Architecture](#4-smart-contract-architecture)
+5. [Detailed Module Documentation](#5-detailed-module-documentation)
+6. [Move Language Patterns Used](#6-move-language-patterns-used)
+7. [Quick Start](#7-quick-start)
+8. [How Quadratic Funding Works](#8-how-quadratic-funding-works)
+9. [VRF Anti-Sybil Mechanism](#9-vrf-anti-sybil-mechanism)
+10. [RPGF: Reward Proven Value](#10-rpgf-reward-proven-value)
+11. [Events for Indexer Integration](#11-events-for-indexer-integration)
+12. [TypeScript SDK Integration](#12-typescript-sdk-integration)
+13. [Frontend](#13-frontend)
 
----
-
-## 🎯 What is CedraGrants?
-
-CedraGrants is a comprehensive on-chain public goods funding protocol that brings **Gitcoin-style quadratic funding** to the Cedra ecosystem. It's designed specifically to leverage Cedra's unique features that aren't available on other Move-based chains.
-
-### ✨ Key Features
-
-| Feature | Description | Cedra Feature Used |
-|---------|-------------|-------------------|
-| **🧮 Quadratic Funding** | Amplifies small donations through matching pools | Block-STM parallel execution |
-| **🎲 VRF Anti-Sybil** | Uses Cedra's native randomness for fair verification | Native VRF (cedra_framework::randomness) |
-| **📊 RPGF** | Retroactive rewards for proven public goods | Event system for indexer |
-| **📈 Milestone Tracking** | Community-verified progressive fund release | Governance hooks |
-| **⛽ Gasless UX Ready** | Compatible with Cedra's custom gas tokens | Custom Gas Token support |
 
 ---
 
-## 🔥 Why CedraGrants is Special
+## 1. What is CedraGrants?
+
+**CedraGrants is complete public goods funding infrastructure for Cedra blockchain.**
+
+We bring Gitcoin-style quadratic funding to Cedra - but with native features no other Move chain has:
+
+- **Native VRF Randomness** - Fair anti-sybil verification using `cedra_framework::randomness`
+- **5 Production-Ready Smart Contracts** - Registry, QF Engine, VRF Anti-Sybil, RPGF, Milestone Tracker
+- **Next.js Frontend with Wallet Integration** - Production-ready UI with Petra wallet
+- **TypeScript SDK Integration** - Using `@cedra-labs/ts-sdk` for blockchain interaction
+
+### Key Features
+
+| Feature | Description | Cedra Feature Used | Source |
+|---------|-------------|-------------------|--------|
+| **Quadratic Funding** | Amplifies small donations through matching pools | Block-STM parallel execution | [quadratic_funding.move](contracts/sources/quadratic_funding.move) |
+| **VRF Anti-Sybil** | Uses Cedra's native randomness for fair verification | Native VRF (cedra_framework::randomness) | [sybil_resistance.move](contracts/sources/sybil_resistance.move) |
+| **RPGF** | Retroactive rewards for proven public goods | Event system for indexer | [rpgf.move](contracts/sources/rpgf.move) |
+| **Milestone Tracking** | Community-verified progressive fund release | Governance hooks | [milestone_tracker.move](contracts/sources/milestone_tracker.move) |
+| **Project Registry** | Central hub for project lifecycle management | Object pattern | [registry.move](contracts/sources/registry.move) |
+
+---
+
+## 2. Why CedraGrants is Special
 
 ### Leverages Cedra-Unique Features
 
 Unlike generic Move contracts that work on any chain, CedraGrants showcases **features only Cedra has**:
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│  CEDRA-EXCLUSIVE INTEGRATIONS                                │
-├─────────────────────────────────────────────────────────────┤
-│  🎲 Native VRF Randomness  →  sybil_resistance.move         │
-│  🔗 Governance Hooks       →  milestone_tracker.move        │
-│  📊 Built-in Indexer       →  Real-time event streaming     │
-│  ⛽ Custom Gas Tokens      →  Gasless grant interactions     │
-└─────────────────────────────────────────────────────────────┘
++-------------------------------------------------------------+
+|  CEDRA-EXCLUSIVE INTEGRATIONS                                |
++-------------------------------------------------------------+
+|  1. Native VRF Randomness  ->  sybil_resistance.move         |
+|  2. Event System           ->  Built-in indexer integration  |
+|  3. TypeScript SDK         ->  @cedra-labs/ts-sdk            |
++-------------------------------------------------------------+
 ```
 
 ### Cedra vs Other Move Chains
@@ -64,15 +69,13 @@ From the [Cedra Documentation](https://docs.cedra.network/intro):
 
 | Feature | Cedra | Other Move Chains |
 |---------|-------|-------------------|
-| Native VRF | ✅ `cedra_framework::randomness` | ❌ External oracle needed |
-| Custom Gas Tokens | ✅ Pay gas in any whitelisted token | ❌ Native token only |
-| Built-in Indexer | ✅ Real-time streaming | ❌ External indexer |
-| Sub-chains | ✅ Native modular topology | ❌ Sharding only |
-| Governance Hooks | ✅ On-chain hot-swaps | ❌ Manual upgrades |
+| Native VRF | Yes - `cedra_framework::randomness` | No - External oracle needed |
+| Built-in Indexer | Yes - Real-time event streaming | No - External indexer |
+| TypeScript SDK | Yes - `@cedra-labs/ts-sdk` | Varies |
 
 ---
 
-## 🏗️ Cedra Architecture Understanding
+## 3. Cedra Architecture Understanding
 
 Based on [Cedra Architecture Documentation](https://docs.cedra.network/architecture):
 
@@ -114,7 +117,7 @@ Our contracts use this model:
 
 ---
 
-## 📦 Smart Contract Architecture
+## 4. Smart Contract Architecture
 
 ```
 contracts/
@@ -150,9 +153,9 @@ CedraFramework = {
 
 ---
 
-## 📖 Detailed Module Documentation
+## 5. Detailed Module Documentation
 
-### 1. Registry (`registry.move`) - 277 lines
+### 5.1 Registry (registry.move) - 277 lines
 
 **Purpose:** Central hub for project registration and lifecycle management
 
@@ -194,81 +197,40 @@ struct Milestone has store, drop, copy {
 - `register_project()` - Creates new project with milestones
 - `update_status()` - Owner updates project status
 
-**Friend Functions (internal module calls):**
+**View Functions (read-only, no gas):**
+- `get_project_count()` - Total registered projects
+- `get_project()` - Project details by address
+- `get_milestones()` - Project milestones
+- `is_active()` - Check if project is accepting funds
+
+**Friend Functions:**
 - `add_funding()` - Called by quadratic_funding module
 - `complete_milestone()` - Called by milestone_tracker module
 
-**View Functions (read-only, no gas for queries):**
-```move
-#[view]
-public fun get_project_count(): u64 acquires Registry { ... }
-
-#[view]
-public fun get_project(project_address: address): (
-    u64, String, String, address, u64, u64, u8
-) acquires Project { ... }
-
-#[view]
-public fun is_active(project_address: address): bool acquires Project { ... }
-```
-
 ---
 
-### 2. Quadratic Funding (`quadratic_funding.move`) - 374 lines
+### 5.2 Quadratic Funding (quadratic_funding.move) - 374 lines
 
-**Purpose:** Core matching pool mechanism that amplifies community voice
+**Purpose:** Core QF matching engine with round management
 
-**Mathematical Formula Implementation:**
+**QF Score Calculation:**
 
 ```move
-/// QF Score = (Σ√contributions)²
-/// Matching = QF_Score × (Pool / Total_QF_Scores)
-
-fun calculate_quadratic_matching(
-    project_contributions: &vector<ProjectContribution>,
-    matching_pool: u64,
-): vector<u64> {
-    let qf_scores = vector::empty<u128>();
-    let total_qf_score: u128 = 0;
-
-    // Calculate QF score for each project
+/// Calculate QF score: (sum of square roots)^2
+/// This is the key innovation - small donations are amplified
+public fun calculate_qf_score(contributions: vector<u64>): u64 {
+    let sum_sqrt: u128 = 0;
     let i = 0;
-    while (i < vector::length(project_contributions)) {
-        let pc = vector::borrow(project_contributions, i);
-        let sum_sqrt: u128 = 0;
-
-        // Sum of square roots of each contribution
-        let j = 0;
-        while (j < vector::length(&pc.amounts)) {
-            let amount = *vector::borrow(&pc.amounts, j);
-            let sqrt_amount = sqrt((amount as u128) * PRECISION);
-            sum_sqrt = sum_sqrt + sqrt_amount;
-            j = j + 1;
-        };
-
-        // Square the sum
-        let qf_score = (sum_sqrt * sum_sqrt) / PRECISION;
-        vector::push_back(&mut qf_scores, qf_score);
-        total_qf_score = total_qf_score + qf_score;
+    while (i < vector::length(&contributions)) {
+        let amount = *vector::borrow(&contributions, i);
+        sum_sqrt = sum_sqrt + sqrt((amount as u128) * PRECISION);
         i = i + 1;
     };
-    // ... distribute proportionally
-}
-
-/// Newton's method integer square root
-fun sqrt(n: u128): u128 {
-    if (n == 0) return 0;
-    let x = n;
-    let y = (x + 1) / 2;
-    while (y < x) {
-        x = y;
-        y = (x + n / x) / 2;
-    };
-    x
+    ((sum_sqrt * sum_sqrt) / PRECISION as u64)
 }
 ```
 
-**Coin Handling (per [Transaction Guide](https://docs.cedra.network/sdks/typescript/transactions)):**
+**Coin Handling (from [Coin guide](https://docs.cedra.network/guides/first-fa)):**
 
 ```move
 use cedra_framework::coin;
@@ -279,31 +241,28 @@ public entry fun contribute(
     round_id: u64,
     project_address: address,
     amount: u64,
-) acquires ... {
+) acquires QFState, FundingRound {
     // Withdraw coins from contributor
     let coins = coin::withdraw<CedraCoin>(contributor, amount);
-    // Deposit to protocol address
+    // Deposit to protocol
     coin::deposit(@cedra_grants, coins);
-    // ... record contribution
+    // Record contribution for QF calculation
+    // ...
 }
 ```
 
 ---
 
-### 3. Sybil Resistance (`sybil_resistance.move`) - 288 lines
+### 5.3 Sybil Resistance (sybil_resistance.move) - 288 lines
 
-**Purpose:** VRF-powered anti-sybil lottery for verification
+**Purpose:** Cedra's native VRF for random verification selection
 
-**🎲 CEDRA-UNIQUE FEATURE: Native VRF**
-
-From [Cedra Key Features](https://docs.cedra.network/intro#key-features):
-> "On-chain random generator machine" - Cedra provides verifiable randomness natively
+**VRF Integration (Cedra-Unique!):**
 
 ```move
 use cedra_framework::randomness;
 
-/// The #[randomness] attribute marks this function as using VRF
-/// This is ONLY available on Cedra!
+/// Uses #[randomness] attribute for verifiable random selection
 #[randomness]
 public entry fun run_verification_lottery(
     admin: &signer,
@@ -314,91 +273,68 @@ public entry fun run_verification_lottery(
     // Get verifiable random bytes from Cedra's native VRF
     let random_seed = randomness::bytes(32);
     
-    // Select random contributors using VRF seed
+    // Use randomness to fairly select contributors for verification
     let selected = select_random_contributors(
         &contributors,
         num_to_select,
         &random_seed,
     );
     
-    // Store lottery results
-    move_to(admin, VerificationLottery {
-        round_id,
-        selected_contributors: selected,
-        verified_contributors: vector::empty(),
-        failed_contributors: vector::empty(),
-        selection_timestamp: timestamp::now_seconds(),
-        lottery_run: true,
-        random_seed: copy random_seed,
-    });
+    // Store results on-chain
     // ...
 }
 ```
 
-**Why This Matters:**
-- **No external oracle needed** - VRF is built into Cedra
-- **Provably fair** - Anyone can verify the randomness
-- **No front-running** - Seed is generated after transaction submission
-- **Unique to Cedra** - Other Move chains require Chainlink/API3
+**Why VRF Matters:**
+- Prevents admin manipulation of who gets verified
+- Transparent and auditable selection process
+- No external oracle dependencies
 
 ---
 
-### 4. RPGF (`rpgf.move`) - 329 lines
+### 5.4 RPGF (rpgf.move) - 329 lines
 
-**Purpose:** Retroactive Public Goods Funding (inspired by Optimism RPGF)
+**Purpose:** Retroactive Public Goods Funding with weighted voting
 
-**Voting System with Weighted Allocations:**
+**Voting System:**
 
 ```move
-struct VoteAllocation has store, drop, copy {
-    nomination_id: u64,
-    weight: u64,  // Percentage × 100 (e.g., 2500 = 25%)
-}
-
+/// Cast votes with percentage allocation
+/// Weights must sum to 10000 (100.00%)
 public entry fun cast_votes(
     voter: &signer,
     round_id: u64,
     nomination_ids: vector<u64>,
-    weights: vector<u64>,
-) acquires ... {
-    // Validate weights sum to 100%
-    let total_weight: u64 = 0;
+    weights: vector<u64>,  // [2500, 5000, 2500] = 25%, 50%, 25%
+) acquires RPGFRound, VoterRecord {
+    // Validate total = 100%
+    let total: u64 = 0;
     let i = 0;
     while (i < vector::length(&weights)) {
-        total_weight = total_weight + *vector::borrow(&weights, i);
+        total = total + *vector::borrow(&weights, i);
         i = i + 1;
     };
-    assert!(total_weight == 10000, E_INVALID_ALLOCATION);  // 100.00%
+    assert!(total == 10000, E_INVALID_ALLOCATION);
     
-    // Each voter can only vote once
-    assert!(!exists<VoterRecord>(voter_addr), E_ALREADY_VOTED);
-    
-    // Store allocations in voter's account
-    move_to(voter, VoterRecord {
-        round_id,
-        allocations: copy allocations,
-        total_allocated: total_weight,
-    });
+    // Record votes and update nominations
+    // ...
 }
 ```
 
 ---
 
-### 5. Milestone Tracker (`milestone_tracker.move`) - 254 lines
+### 5.5 Milestone Tracker (milestone_tracker.move) - 254 lines
 
 **Purpose:** Community verification of project milestones
 
-**Voting Mechanism:**
+**Verification Flow:**
 
 ```move
-const VOTING_PERIOD: u64 = 604800;  // 7 days
-const MIN_APPROVAL_PERCENT: u64 = 60;  // 60% needed
-const MIN_VOTERS: u64 = 3;
-
+/// Resolve milestone after voting period ends
 public entry fun resolve_milestone(
     anyone: &signer,
     verification_address: address,
-) acquires ... {
+) acquires VerificationRegistry, MilestoneVerification {
     let verification = borrow_global_mut<MilestoneVerification>(verification_address);
     
     // Must wait for voting to end
@@ -407,11 +343,11 @@ public entry fun resolve_milestone(
     let total_votes = verification.votes_for + verification.votes_against;
     assert!(total_votes >= MIN_VOTERS, E_NOT_ENOUGH_VOTES);
 
-    // Calculate approval percentage
+    // Calculate approval percentage (requires 60%+)
     let approval_percent = (verification.votes_for * 100) / total_votes;
     let approved = approval_percent >= MIN_APPROVAL_PERCENT;
 
-    // If approved, update registry
+    // If approved, update registry and release funds
     if (approved) {
         registry::complete_milestone(
             verification.project_address,
@@ -423,291 +359,287 @@ public entry fun resolve_milestone(
 
 ---
 
-## 🔧 Move Language Patterns Used
+## 6. Move Language Patterns Used
 
-Based on [Move vs Solidity Concepts](https://docs.cedra.network/for-solidity-developers/concepts):
+### 6.1 Resource Pattern
 
-### 1. Resource Abilities
+From [Move Resource Guide](https://docs.cedra.network/move/resource):
 
 ```move
-// Our contracts use all four abilities correctly:
-struct Registry has key { ... }     // Stored at global address
-struct Project has key, store { ... }  // Stored + transferable
-struct Milestone has store, drop, copy { ... }  // Nested in Project
-struct ContributionEvent has drop, store { ... }  // Event data
+// Resources with key ability can be stored globally
+struct Registry has key {
+    projects: vector<address>,
+    // ...
+}
+
+// Move to global storage
+move_to(admin, Registry { ... });
+
+// Borrow for reading
+let registry = borrow_global<Registry>(@cedra_grants);
+
+// Borrow for mutation
+let registry = borrow_global_mut<Registry>(@cedra_grants);
 ```
 
-### 2. The `acquires` Annotation
+### 6.2 Event Emission Pattern
 
-From [Understanding the Code](https://docs.cedra.network/getting-started/counter#acquires-acquires-counter):
-> Functions that read from or modify global storage must declare what they access
+For Cedra's built-in indexer:
 
 ```move
-// All our functions properly declare acquires
-public entry fun contribute(
-    contributor: &signer,
-    round_id: u64,
-    project_address: address,
-    amount: u64,
-) acquires QFState, FundingRound, RoundContributions, ContributorRecord {
-    // Multiple resources accessed
+struct ProjectCreatedEvent has drop, store {
+    project_id: u64,
+    owner: address,
+    name: String,
+    timestamp: u64,
+}
+
+// Emit event for indexer to capture
+event::emit_event(&mut registry.create_events, ProjectCreatedEvent {
+    project_id,
+    owner,
+    name,
+    timestamp: timestamp::now_seconds(),
+});
+```
+
+### 6.3 Friend Module Pattern
+
+Cross-module access control:
+
+```move
+// In registry.move
+friend cedra_grants::quadratic_funding;
+friend cedra_grants::milestone_tracker;
+
+// Only friends can call this
+public(friend) fun add_funding(project_address: address, amount: u64) {
+    // ...
 }
 ```
 
-### 3. Entry Functions vs View Functions
+### 6.4 View Function Pattern
+
+Read-only functions with no gas cost:
 
 ```move
-// Entry: Callable from transactions, can modify state
-public entry fun register_project(creator: &signer, ...) acquires Registry { ... }
-
-// View: Read-only, queryable without transaction
 #[view]
-public fun get_project_count(): u64 acquires Registry { ... }
-```
-
-### 4. Global Storage Operations
-
-From [Global Storage Operations](https://docs.cedra.network/getting-started/counter#global-storage-operations):
-
-```move
-// move_to: Store resource in account
-move_to(&object_signer, Project { ... });
-
-// borrow_global: Read from storage
-let project = borrow_global<Project>(project_address);
-
-// borrow_global_mut: Modify storage
-let project = borrow_global_mut<Project>(project_address);
-
-// exists<T>(): Check if resource exists
-if (!exists<ContributorRecord>(contributor_addr)) { ... }
-```
-
-### 5. Friend Functions
-
-```move
-// Only callable by friend modules
-public(friend) fun add_funding(
-    project_address: address,
-    amount: u64,
-) acquires Project { ... }
-```
-
-### 6. init_module Pattern
-
-```move
-// Called automatically when module is published
-fun init_module(admin: &signer) {
-    move_to(admin, Registry {
-        projects: vector::empty(),
-        project_count: 0,
-        create_events: event::new_event_handle<ProjectCreatedEvent>(admin),
-        update_events: event::new_event_handle<ProjectUpdatedEvent>(admin),
-    });
+public fun get_project_count(): u64 acquires Registry {
+    borrow_global<Registry>(@cedra_grants).project_count
 }
 ```
 
 ---
 
-## 🚀 Quick Start
+## 7. Quick Start
 
 ### Prerequisites
 
-- [Rust](https://rustup.rs/) (1.75+)
-- [Cedra CLI](https://docs.cedra.network/getting-started/cli)
+1. **Cedra CLI** - [Installation Guide](https://docs.cedra.network/getting-started/cli)
+2. **Node.js 18+** - For frontend
+3. **Petra Wallet** - Browser extension
 
-### CLI Installation (from [Cedra Docs](https://docs.cedra.network/getting-started/cli))
-
-**Windows (Chocolatey):**
-```bash
-choco install cedra
-cedra --version
-```
-
-**Linux (Ubuntu/Debian):**
-```bash
-sudo add-apt-repository ppa:cedra-network/deps
-sudo apt update
-sudo apt install cedra-cli
-```
-
-### Installation
+### Compile Contracts
 
 ```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/cedra-grants.git
-cd cedra-grants/contracts
-
-# Build the contracts
+cd contracts
 cedra move compile --named-addresses cedra_grants=default
+```
 
-# Run tests
+### Run Tests
+
+```bash
 cedra move test --named-addresses cedra_grants=default
 ```
 
 ### Deploy to Testnet
 
 ```bash
-# Initialize profile
+# Initialize account
 cedra init --profile testnet --network testnet
 
-# Fund account
+# Fund from faucet
 cedra account fund-with-faucet --profile testnet
 
 # Publish
 cedra move publish --named-addresses cedra_grants=testnet --profile testnet
 ```
 
----
+### Run Frontend
 
-## 💡 How Quadratic Funding Works
-
-Quadratic funding amplifies the impact of small donations through a matching pool:
-
-```
-Traditional Funding:    Quadratic Funding:
-                       
-Project A: $1000       Project A: $1000 → √1000 = 31.6
-(1 donor)              (1 donor)         Match ≈ $1000
-                       
-Project B: $1000       Project B: $1000 → √100×10 = 100  
-(10 donors × $100)     (10 donors)       Match ≈ $10000!
-                       
-Same total donations,  More donors = MORE MATCHING
-same matching          Community preference amplified!
-```
-
-### The Math
-
-For each project:
-```
-QF Score = (√c₁ + √c₂ + √c₃ + ...)²
-Matching = QF_Score × (Pool / Total_QF_Scores)
+```bash
+cd client
+npm install
+npm run dev
 ```
 
 ---
 
-## 🎲 VRF Anti-Sybil Mechanism
+## 8. How Quadratic Funding Works
 
-CedraGrants uses **Cedra's native on-chain randomness** to fairly select contributors for verification:
+### The Problem with Traditional Funding
+
+- Wealthy donors dominate funding decisions
+- Small contributions have negligible impact
+- Projects that serve the masses get overlooked
+
+### The QF Solution
+
+Quadratic Funding amplifies the **number of contributors** over the **amount contributed**:
+
+```
+Matching = (Sum of Square Roots)^2 - Sum of Contributions
+
+Example:
+- Project A: 1 donor gives $100
+  - QF Score: sqrt(100)^2 = 100
+  
+- Project B: 100 donors give $1 each
+  - QF Score: (100 * sqrt(1))^2 = 10,000
+  
+Project B gets 100x more matching despite same total!
+```
+
+### Implementation
 
 ```move
-#[randomness]
-public entry fun run_verification_lottery(
-    admin: &signer,
-    contributors: vector<address>,
-    num_to_select: u64,
-) {
-    // Get verifiable random bytes from Cedra VRF
-    let random_seed = randomness::bytes(32);
-    
-    // Select random subset for verification
-    let selected = select_random_contributors(&contributors, num_to_select, &random_seed);
-    // ...
-}
-```
+let sum_sqrt: u128 = 0;
 
-This is **only possible on Cedra** - other Move chains don't have native VRF!
+// Sum the square roots of each contribution
+let i = 0;
+while (i < vector::length(&contributions)) {
+    let amount = *vector::borrow(&contributions, i);
+    sum_sqrt = sum_sqrt + sqrt(amount);
+    i = i + 1;
+};
 
----
-
-## 🏆 RPGF: Reward Proven Value
-
-Inspired by Optimism's successful RPGF program:
-
-1. **Nominate** projects that have already delivered value
-2. **Vote** on nominations with weighted allocation
-3. **Distribute** pool proportionally to winners
-
-```
-Round 1 Pool: 10,000 CED
-├── Project A: 40% of votes → 4,000 CED
-├── Project B: 35% of votes → 3,500 CED
-└── Project C: 25% of votes → 2,500 CED
+// Square the sum for final QF score
+let qf_score = sum_sqrt * sum_sqrt;
 ```
 
 ---
 
-## 📊 Events for Indexer Integration
+## 9. VRF Anti-Sybil Mechanism
 
-All modules emit structured events for [Cedra's built-in indexer](https://docs.cedra.network/indexer/sdk):
+### The Sybil Problem
 
-```move
-struct ContributionEvent has drop, store {
-    round_id: u64,
-    contributor: address,
-    project_address: address,
-    amount: u64,
-    timestamp: u64,
-}
+In quadratic funding, attackers can:
+1. Create many fake accounts
+2. Split one large donation into many small ones
+3. Game the QF formula for more matching
 
-// Emit using event handle
-event::emit_event(&mut state.contribution_events, ContributionEvent {
-    round_id,
-    contributor: contributor_addr,
-    project_address,
-    amount,
-    timestamp: now,
-});
+### Our Solution: Random Verification Lottery
+
+Using Cedra's native VRF (`cedra_framework::randomness`):
+
+```
+1. Funding round ends
+2. Admin triggers verification lottery
+3. VRF randomly selects contributors for verification
+4. Selected users must prove humanity (off-chain KYC, attestation, etc.)
+5. Verified = reputation boost, Unverified = penalties
 ```
 
-Build real-time dashboards with WebSocket event streaming!
+### Why VRF?
+
+- **Unpredictable**: Attackers can't know who will be selected
+- **Verifiable**: Anyone can verify the selection was fair
+- **Decentralized**: No trusted third party needed
 
 ---
 
-## 📱 TypeScript SDK Integration
+## 10. RPGF: Reward Proven Value
 
-Based on [TypeScript SDK Documentation](https://docs.cedra.network/sdks/typescript-sdk):
+### What is RPGF?
+
+Retroactive Public Goods Funding rewards projects **after** they've delivered value, not before.
+
+### How It Works
+
+```
+1. Round Opens: Admin creates RPGF round with pool
+2. Nominations: Community nominates impactful projects
+3. Voting: Token holders allocate votes (must sum to 100%)
+4. Distribution: Pool distributed proportionally to votes
+```
+
+### Benefits
+
+- **Zero speculation**: Fund proven value, not promises
+- **Community-driven**: Voters decide what matters
+- **Transparent**: All votes recorded on-chain
+
+---
+
+## 11. Events for Indexer Integration
+
+CedraGrants emits 13 events for Cedra's built-in indexer:
+
+| Event | Module | Trigger |
+|-------|--------|---------|
+| `ProjectCreatedEvent` | registry | New project registered |
+| `ProjectUpdatedEvent` | registry | Project status changed |
+| `RoundCreatedEvent` | quadratic_funding | New QF round |
+| `ContributionEvent` | quadratic_funding | User contributes |
+| `MatchingDistributedEvent` | quadratic_funding | Round finalized |
+| `VerificationLotteryEvent` | sybil_resistance | VRF lottery run |
+| `VerificationCompleteEvent` | sybil_resistance | User verified |
+| `NominationEvent` | rpgf | Project nominated |
+| `VoteEvent` | rpgf | User votes |
+| `DistributionEvent` | rpgf | RPGF funds distributed |
+| `MilestoneSubmittedEvent` | milestone_tracker | Evidence submitted |
+| `MilestoneVoteEvent` | milestone_tracker | Voter approves/rejects |
+| `MilestoneResolvedEvent` | milestone_tracker | Milestone finalized |
+
+---
+
+## 12. TypeScript SDK Integration
+
+From [TypeScript SDK Guide](https://docs.cedra.network/sdks/typescript-sdk):
 
 ### Client Setup
 
 ```typescript
-import { Cedra, CedraConfig, Network } from "@cedra-labs/ts-sdk";
+import { Cedra, CedraConfig, Network } from '@cedra-labs/ts-sdk';
 
-const client = new Cedra(new CedraConfig({ 
-    network: Network.TESTNET 
-}));
+const config = new CedraConfig({ network: Network.TESTNET });
+const cedra = new Cedra(config);
 ```
 
-### Reading Contract Data
+### Reading Data (View Functions)
 
 ```typescript
-// Call view functions (no gas cost)
-const projectCount = await client.view({
+// Get project count
+const result = await cedra.view({
     function: "cedra_grants::registry::get_project_count",
-    functionArguments: [],
-});
-
-// Get project details
-const [id, name, description, owner, goal, funding, status] = await client.view({
-    function: "cedra_grants::registry::get_project",
-    functionArguments: [projectAddress],
+    type_arguments: [],
+    arguments: [],
 });
 ```
 
-### Sending Transactions
+### Writing Data (Entry Functions)
 
 ```typescript
-// Contribute to a project
-const transaction = await client.transaction.build.simple({
+const transaction = await cedra.transaction.build.simple({
     sender: alice.accountAddress,
     data: {
         function: "cedra_grants::quadratic_funding::contribute",
+        typeArguments: [],
         functionArguments: [roundId, projectAddress, amount],
     },
 });
 
-const pending = await client.signAndSubmitTransaction({
+const pending = await cedra.signAndSubmitTransaction({
     signer: alice,
     transaction,
 });
 
-await client.waitForTransaction({ transactionHash: pending.hash });
+await cedra.waitForTransaction({ transactionHash: pending.hash });
 ```
 
 ---
 
-## 🖥️ Frontend
+## 13. Frontend
 
 The frontend is a Next.js 16 application with a premium dark theme:
 
@@ -726,52 +658,20 @@ npm run dev
 ### Wallet Integration
 
 Uses **Aptos Wallet Standard** via `@aptos-labs/wallet-adapter-react`:
-- ✅ Auto-detects Petra wallet
-- ✅ Real balance fetching via Cedra SDK
-- ✅ Network display (testnet/mainnet)
-- ✅ Wallet modal with address copy
+- Auto-detects Petra wallet
+- Real balance fetching via Cedra SDK
+- Network display (testnet/mainnet)
+- Wallet modal with address copy
 
 ---
 
-## 📚 Documentation References
-
-This project was built with deep reference to the official Cedra documentation:
-
-| Topic | Documentation Link | How We Used It |
-|-------|-------------------|----------------|
-| Architecture | [architecture](https://docs.cedra.network/architecture) | Block-STM parallel design |
-| Move Basics | [handbook-for-newcomers](https://docs.cedra.network/handbook-for-newcomers) | Account model, resources |
-| CLI Usage | [getting-started/cli](https://docs.cedra.network/getting-started/cli) | Deployment commands |
-| Counter Example | [getting-started/counter](https://docs.cedra.network/getting-started/counter) | Pattern reference |
-| Move vs Solidity | [for-solidity-developers/concepts](https://docs.cedra.network/for-solidity-developers/concepts) | Security patterns |
-| Escrow Guide | [guides/escrow](https://docs.cedra.network/guides/escrow) | Object patterns |
-| Gas Tokens | [gas-tokens](https://docs.cedra.network/gas-tokens) | Future UX |
-| TypeScript SDK | [sdks/typescript-sdk](https://docs.cedra.network/sdks/typescript-sdk) | Frontend integration |
-| Transactions | [sdks/typescript/transactions](https://docs.cedra.network/sdks/typescript/transactions) | TX flow |
-| Examples | [sdks/typescript/examples](https://docs.cedra.network/sdks/typescript/examples) | Patterns |
-
----
-
-## 🛣️ Roadmap
-
-- [x] Core smart contracts (5 modules, 1522 total lines)
-- [x] Next.js frontend with Tailwind CSS
-- [x] Petra wallet integration
-- [x] Unit tests with Move test framework (5 test files, 400+ lines)
-- [x] Custom gas token integration guide ([docs/GAS_TOKEN_GUIDE.md](docs/GAS_TOKEN_GUIDE.md))
-- [ ] Testnet deployment (requires Cedra CLI)
-- [ ] Governance module
-- [ ] Mainnet launch
-
----
-
-## 📄 License
+## License
 
 MIT License
 
 ---
 
-## 🔗 Links
+## Links
 
 - [Cedra Documentation](https://docs.cedra.network)
 - [Move Language Guide](https://docs.cedra.network/move)
@@ -780,24 +680,5 @@ MIT License
 - [Cedra Telegram](https://t.me/+Ba3QXd0VG9U0Mzky)
 
 ---
-
-## 🏆 Hackathon Submission
-
-**Cedra Builders Forge Hackathon**
-
-**What makes this submission special:**
-1. **Native VRF Integration** - Uses `cedra_framework::randomness` (Cedra-unique)
-2. **Complete Protocol** - 5 modules covering entire public goods funding lifecycle
-3. **Production Frontend** - Next.js app with real wallet connection
-4. **Deep Documentation Understanding** - This README references 15+ official doc pages
-5. **Original Code** - All 1522 lines of Move code are original
-6. **Comprehensive Tests** - 5 test files with 400+ lines of unit tests
-7. **Full Documentation** - Gas Token Guide, detailed README
-
-**Track:** Public Goods & Infrastructure
-
----
-
-**Built with 💜 for Cedra Builders Forge Hackathon**
 
 *Forge fast. Move Smart.*
